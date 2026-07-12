@@ -6,7 +6,7 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://devtoolcompare.com',
+  site: 'https://devtoolcompare.haydenking0512.workers.dev',
   vite: {
     plugins: [tailwindcss()]
   },
