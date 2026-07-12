@@ -1,0 +1,70 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import type { CollectionEntry } from "astro:content";
+
+export interface Props {
+  article: CollectionEntry<"articles">;
+}
+
+const { article } = Astro.props;
+const { title, description, pubDate, category, tags, affiliateDisclosure, comparedTools } = article.data;
+const formattedDate = pubDate.toLocaleDateString("en-US", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
+---
+
+<BaseLayout title={title} description={description}>
+  <article class="max-w-3xl mx-auto px-4 py-12">
+    <!-- Breadcrumb -->
+    <nav class="text-sm text-zinc-500 mb-6">
+      <a href="/" class="hover:text-white">Home</a>
+      <span class="mx-2">/</span>
+      <a href="/blog" class="hover:text-white">Articles</a>
+      <span class="mx-2">/</span>
+      <a href={`/blog?category=${category}`} class="hover:text-white">{category}</a>
+    </nav>
+
+    <!-- Header -->
+    <header class="mb-10">
+      <div class="flex flex-wrap gap-2 mb-4">
+        <span class="text-xs font-medium bg-indigo-500/10 text-indigo-400 px-2.5 py-1 rounded-full border border-indigo-500/20">
+          {category}
+        </span>
+        {comparedTools?.map(tool => (
+          <span class="text-xs font-medium bg-zinc-800 text-zinc-300 px-2.5 py-1 rounded-full">
+            {tool}
+          </span>
+        ))}
+      </div>
+
+      <h1 class="text-3xl sm:text-4xl font-bold text-white leading-tight mb-4">{title}</h1>
+      <p class="text-lg text-zinc-400 mb-4">{description}</p>
+
+      <div class="flex items-center gap-4 text-sm text-zinc-500">
+        <time datetime={pubDate.toISOString()}>{formattedDate}</time>
+        <span>•</span>
+        <div class="flex gap-2">
+          {tags.map(tag => (
+            <span class="text-zinc-500">#{tag}</span>
+          ))}
+        </div>
+      </div>
+    </header>
+
+    <!-- Content -->
+    <div class="article-content">
+      <slot />
+    </div>
+
+    <!-- Affiliate Disclosure -->
+    {affiliateDisclosure && (
+      <div class="disclosure-notice">
+        <strong>Affiliate Disclosure:</strong> Some links on this page are affiliate links.
+        If you purchase through these links, we may earn a commission at no extra cost to you.
+        We only recommend tools we genuinely believe add value for developers.
+      </div>
+    )}
+  </article>
+</BaseLayout>

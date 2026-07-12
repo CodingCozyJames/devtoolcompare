@@ -1,0 +1,72 @@
+---
+import "../styles/global.css";
+
+export interface Props {
+  title: string;
+  description: string;
+  image?: string;
+}
+
+const { title, description, image } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title} | DevToolCompare</title>
+    <meta name="description" content={description} />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href={Astro.url.href} />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={Astro.url.href} />
+    {image && <meta property="og:image" content={image} />}
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+
+    <!-- RSS -->
+    <link rel="alternate" type="application/rss+xml" title="DevToolCompare RSS" href="/rss.xml" />
+
+    <!-- Schema -->
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "DevToolCompare",
+      "url": Astro.url.origin,
+      "description": "In-depth comparisons and reviews of developer tools, SaaS platforms, and AI coding assistants."
+    })} />
+  </head>
+  <body class="min-h-screen flex flex-col">
+    <header class="border-b border-zinc-800 bg-zinc-950/80 backdrop-blur-sm sticky top-0 z-50">
+      <nav class="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
+        <a href="/" class="text-xl font-bold text-white hover:text-indigo-400 transition-colors no-underline">
+          <span class="text-indigo-400">Dev</span>ToolCompare
+        </a>
+        <div class="flex items-center gap-6 text-sm">
+          <a href="/" class="text-zinc-400 hover:text-white transition-colors no-underline">Home</a>
+          <a href="/blog" class="text-zinc-400 hover:text-white transition-colors no-underline">Articles</a>
+          <a href="/about" class="text-zinc-400 hover:text-white transition-colors no-underline">About</a>
+        </div>
+      </nav>
+    </header>
+
+    <main class="flex-1">
+      <slot />
+    </main>
+
+    <footer class="border-t border-zinc-800 bg-zinc-950 mt-16">
+      <div class="max-w-5xl mx-auto px-4 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-zinc-500">
+        <p>&copy; {new Date().getFullYear()} DevToolCompare. Independent reviews & comparisons.</p>
+        <p>We may earn affiliate commissions from links on this site. <a href="/about" class="hover:text-zinc-300">Learn more</a>.</p>
+      </div>
+    </footer>
+  </body>
+</html>

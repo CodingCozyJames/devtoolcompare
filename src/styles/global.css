@@ -1,0 +1,88 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --color-brand: #6366f1;
+    --color-brand-dark: #4f46e5;
+  }
+
+  body {
+    @apply bg-zinc-950 text-zinc-100 antialiased;
+  }
+
+  a {
+    @apply text-indigo-400 hover:text-indigo-300 transition-colors;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-bold text-white;
+  }
+}
+
+@layer components {
+  .article-content h2 {
+    @apply text-2xl font-bold mt-12 mb-4 text-white;
+  }
+  .article-content h3 {
+    @apply text-xl font-bold mt-8 mb-3 text-zinc-200;
+  }
+  .article-content p {
+    @apply mb-4 text-zinc-300 leading-relaxed;
+  }
+  .article-content ul, .article-content ol {
+    @apply mb-4 pl-6 text-zinc-300;
+  }
+  .article-content li {
+    @apply mb-2;
+  }
+  .article-content ul li {
+    @apply list-disc;
+  }
+  .article-content ol li {
+    @apply list-decimal;
+  }
+  .article-content strong {
+    @apply text-zinc-100 font-semibold;
+  }
+  .article-content blockquote {
+    @apply border-l-4 border-indigo-500 pl-4 italic text-zinc-400 my-6;
+  }
+  .article-content code {
+    @apply bg-zinc-800 text-indigo-300 px-1.5 py-0.5 rounded text-sm;
+  }
+  .article-content pre {
+    @apply bg-zinc-900 border border-zinc-800 rounded-lg p-4 my-6 overflow-x-auto;
+  }
+  .article-content pre code {
+    @apply bg-transparent text-zinc-200 px-0 py-0;
+  }
+  .article-content hr {
+    @apply border-zinc-800 my-8;
+  }
+  .article-content img {
+    @apply rounded-lg my-6 w-full;
+  }
+  .comparison-table {
+    @apply w-full border-collapse my-8;
+  }
+  .comparison-table th {
+    @apply bg-zinc-900 text-zinc-100 font-semibold p-3 text-left border border-zinc-800;
+  }
+  .comparison-table td {
+    @apply p-3 border border-zinc-800 text-zinc-300;
+  }
+  .comparison-table tr:hover td {
+    @apply bg-zinc-900/50;
+  }
+
+  .affiliate-box {
+    @apply bg-gradient-to-r from-indigo-950/40 to-zinc-900/60 border border-indigo-900/50 rounded-lg p-5 my-6;
+  }
+  .affiliate-box a {
+    @apply text-indigo-300 font-medium;
+  }
+
+  .disclosure-notice {
+    @apply text-xs text-zinc-500 italic mt-8 pt-4 border-t border-zinc-800;
+  }
+}
