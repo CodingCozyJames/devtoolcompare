@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DevToolCompare — Admin Dashboard</title>
+  <link rel="stylesheet" href="/static/admin.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <h1><span class="brand-accent">Dev</span>ToolCompare <span class="badge">Admin</span></h1>
+      <div class="header-stats">
+        <span class="stat"><span class="stat-num">{{ published_count }}</span> published</span>
+        <span class="stat draft-stat"><span class="stat-num">{{ draft_count }}</span> pending</span>
+        <span class="stat rejected-stat"><span class="stat-num">{{ rejected|length }}</span> rejected</span>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    {% if drafts %}
+    <section class="drafts-section">
+      <h2>Pending Review <span class="count-badge">{{ draft_count }}</span></h2>
+      <div class="draft-grid">
+        {% for draft in drafts %}
+        <div class="draft-card" data-slug="{{ draft.slug }}">
+          <div class="card-header">
+            <span class="category-tag">{{ draft.category }}</span>
+            <span class="word-count">{{ draft.word_count }} words</span>
+            <span class="created-time">{{ draft.created }}</span>
+          </div>
+          <h3>{{ draft.title }}</h3>
+          <p class="description">{{ draft.description }}</p>
+          <div class="tags">
+            {% for tag in draft.tags %}
+            <span class="tag">#{{ tag }}</span>
+            {% endfor %}
+          </div>
+          <details class="preview">
+            <summary>Preview content</summary>
+            <div class="preview-content">{{ draft.preview }}</div>
+          </details>
+          <div class="card-actions">
+            <form action="/approve/{{ draft.filename }}" method="post" class="inline-form">
+              <button type="submit" class="btn btn-approve">✅ Approve & Publish</button>
+            </form>
+            <form action="/reject/{{ draft.filename }}" method="post" class="inline-form">
+              <button type="submit" class="btn btn-reject">❌ Reject</button>
+            </form>
+            <details class="reject-details">
+              <summary class="reject-reason-btn">Reject with reason</summary>
+              <form action="/reject-with-reason/{{ draft.filename }}" method="post" class="reject-form">
+                <textarea name="reason" placeholder="Why is this being rejected? (e.g., inaccurate, off-topic, weak topic)" required></textarea>
+                <button type="submit" class="btn btn-reject">Submit Rejection</button>
+              </form>
+            </details>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+    {% else %}
+    <section class="empty-state">
+      <div class="empty-icon">📭</div>
+      <h2>No pending drafts</h2>
+      <p>Drafts will appear here when the content generator runs. <br>Check back after the next scheduled cron job.</p>
+    </section>
+    {% endif %}
+
+    {% if rejected %}
+    <section class="rejected-section">
+      <h2>Recently Rejected</h2>
+      <div class="rejected-list">
+        {% for item in rejected %}
+        <div class="rejected-item">
+          <span class="category-tag">{{ item.category }}</span>
+          <span class="title">{{ item.title }}</span>
+          <span class="rejected-time">{{ item.rejected }}</span>
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+    {% endif %}
+  </main>
+
+  <footer>
+    <p>DevToolCompare Admin Dashboard · <a href="http://localhost:4321" target="_blank">View Site</a></p>
+  </footer>
+</body>
+</html>
